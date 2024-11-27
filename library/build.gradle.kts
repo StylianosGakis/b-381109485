@@ -1,3 +1,5 @@
+import com.android.build.api.variant.LibraryAndroidComponentsExtension
+
 plugins {
   alias(libs.plugins.android.library)
   alias(libs.plugins.kotlin.android)
@@ -25,6 +27,14 @@ android {
   }
 }
 
+extensions.configure<LibraryAndroidComponentsExtension> {
+  beforeVariants { libraryVariantBuilder ->
+    if (libraryVariantBuilder.buildType == "debug") {
+      libraryVariantBuilder.enable = false
+    }
+  }
+}
+
 dependencies {
   implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -34,6 +44,6 @@ dependencies {
   implementation(libs.androidx.ui.graphics)
   implementation(libs.androidx.ui.tooling.preview)
   implementation(libs.androidx.material3)
-  debugImplementation(libs.androidx.ui.tooling)
-  debugImplementation(libs.androidx.ui.test.manifest)
+  implementation(libs.androidx.ui.tooling)
+  implementation(libs.androidx.ui.test.manifest)
 }
